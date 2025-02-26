@@ -1,0 +1,31 @@
+# Visual Studio / .NET
+.vs/
+bin/
+obj/
+*.suo
+*.user
+
+# NuGet
+.nuget/
+packages/
+
+# MSSQL
+*.mdf
+*.ldf
+
+# ASP.NET Core
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+
+# Logs
+logs/
+*.log
+
+# Angular / Node.js
+frontend/BookApp/node_modules/
+frontend/BookApp/dist/
+
+# IDE
+.vscode/
+.idea/
