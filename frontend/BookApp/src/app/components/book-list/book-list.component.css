@@ -1,0 +1,41 @@
+.active {
+    background-color: lightblue;
+  }
+
+  .container {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .book-list {
+    flex: 70%;
+  }
+  
+  .chart-container {
+    flex: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .chart-container canvas {
+    width: 100% !important;
+    height: 300px !important;
+  }
+
+  .export-buttons {
+    margin: 15px 0;
+    display: flex;
+    gap: 10px;
+  }
+  .export-buttons button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .export-buttons button:hover {
+    background-color: #0056b3;
+  }

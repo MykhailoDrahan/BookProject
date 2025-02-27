@@ -1,0 +1,52 @@
+<div class="container">
+  <div class="book-list">
+    <div class="export-buttons">
+      <button (click)="exportToCSV()">Експорт у CSV</button>
+      <button (click)="exportToPDF()">Друк / PDF</button>
+    </div>
+    <div>
+      <input type="text" placeholder="Пошук за назвою" [(ngModel)]="searchTerm" (input)="onSearchChange()">
+    </div>
+
+    <div>
+      <label>Дата публікації: </label>
+      <input type="date" [(ngModel)]="startDate" (change)="applyFilters()"> - 
+      <input type="date" [(ngModel)]="endDate" (change)="applyFilters()">
+      <button (click)="filterThisMonth()">За цей місяць</button>
+      <button (click)="filterThisYear()">За цей рік</button>
+      <button (click)="clearFilters()">Очистити</button>
+    </div>
+
+    <button (click)="openModal()">Додати книгу</button>
+
+    <table>
+      <thead>
+        <tr>
+          <th (click)="toggleSort('title')">Назва</th>
+          <th (click)="toggleSort('publicationDate')">Дата публікації</th>
+          <th (click)="toggleSort('pageCount')">Кількість сторінок</th>
+          <th>Дії</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let book of filteredBooks" 
+            [class.active]="book.id === selectedBookId"
+            (click)="setActiveBook(book.id!)">
+          <td>{{ book.title }}</td>
+          <td>{{ book.publicationDate | date:'yyyy-MM-dd' }}</td>
+          <td>{{ book.pageCount }}</td>
+          <td>
+            <button (click)="openModal(book)">Редагувати</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-book-form [showModal]="showModal" [book]="selectedBook" (closeModal)="showModal = false" (bookSaved)="onBookSaved()"></app-book-form>
+  </div>
+
+  <div class="chart-container">
+    <h2>Статистика книг</h2>
+    <app-book-chart></app-book-chart>
+  </div>
+</div>
