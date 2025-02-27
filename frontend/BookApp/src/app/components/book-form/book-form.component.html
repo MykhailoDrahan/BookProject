@@ -1,0 +1,20 @@
+<div class="modal" *ngIf="showModal">
+    <div class="modal-content">
+      <h2>{{ book.id ? 'Редагувати книгу' : 'Додати книгу' }}</h2>
+      
+      <label>Назва:</label>
+      <input type="text" [(ngModel)]="book.title" required>
+  
+      <label>Дата публікації:</label>
+      <input type="date" [(ngModel)]="book.publicationDate" required>
+  
+      <label>Опис:</label>
+      <textarea [(ngModel)]="book.description" required></textarea>
+  
+      <label>Кількість сторінок:</label>
+      <input type="number" [(ngModel)]="book.pageCount" min="1" required>
+  
+      <button (click)="saveBook()">Зберегти</button>
+      <button (click)="closeModal.emit()">Скасувати</button>
+    </div>
+  </div>
