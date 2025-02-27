@@ -3,6 +3,8 @@ import { NgForOf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Book, BookService } from '../../services/book.service';
 import { DatePipe } from '@angular/common';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { BookFormComponent } from '../book-form/book-form.component';
 
 @Component({
@@ -10,7 +12,7 @@ import { BookFormComponent } from '../book-form/book-form.component';
   standalone: true,
   templateUrl: './book-list.component.html',
   styleUrls: ['./book-list.component.css'],
-  imports: [NgForOf, FormsModule, DatePipe, BookFormComponent]
+  imports: [NgForOf, FormsModule, DatePipe, BookFormComponent, MatDatepickerModule, MatNativeDateModule]
 })
 export class BookListComponent implements OnInit {
   books: Book[] = [];
@@ -20,6 +22,8 @@ export class BookListComponent implements OnInit {
   selectedBook: Book = { title: '', publicationDate: '', description: '', pageCount: 0 };
   sortField: string = '';
   sortDirection: 'asc' | 'desc' = 'asc';
+  startDate: string | null = null;
+  endDate: string | null = null;
 
   private bookService = inject(BookService);
 
@@ -30,14 +34,34 @@ export class BookListComponent implements OnInit {
   loadBooks(): void {
     this.bookService.getBooks().subscribe(data => {
       this.books = data;
-      this.filteredBooks = [...this.books];
+      this.applyFilters();
     });
   }
 
+  applyFilters(): void {
+    this.filteredBooks = this.books.filter(book => {
+      const publicationDate = new Date(book.publicationDate).toISOString().split('T')[0];
+
+      if (this.searchTerm && !book.title.toLowerCase().includes(this.searchTerm.toLowerCase())) {
+        return false;
+      }
+
+      if (this.startDate && publicationDate < this.startDate) {
+        return false;
+      }
+
+      if (this.endDate && publicationDate > this.endDate) {
+        return false;
+      }
+
+      return true;
+    });
+
+    this.sortBooks();
+  }
+
   onSearchChange(): void {
-    this.filteredBooks = this.books.filter(book =>
-      book.title.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+    this.applyFilters();
   }
 
   toggleSort(field: string): void {
@@ -62,6 +86,26 @@ export class BookListComponent implements OnInit {
       if (valueA > valueB) return this.sortDirection === 'asc' ? 1 : -1;
       return 0;
     });
+  }
+
+  filterThisMonth(): void {
+    const now = new Date();
+    this.startDate = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+    this.endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split('T')[0];
+    this.applyFilters();
+  }
+
+  filterThisYear(): void {
+    const now = new Date();
+    this.startDate = new Date(now.getFullYear(), 0, 1).toISOString().split('T')[0];
+    this.endDate = new Date(now.getFullYear(), 11, 31).toISOString().split('T')[0];
+    this.applyFilters();
+  }
+
+  clearFilters(): void {
+    this.startDate = null;
+    this.endDate = null;
+    this.applyFilters();
   }
 
   openModal(book?: Book): void {
