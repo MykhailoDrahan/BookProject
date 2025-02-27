@@ -22,3 +22,20 @@
     width: 100% !important;
     height: 300px !important;
   }
+
+  .export-buttons {
+    margin: 15px 0;
+    display: flex;
+    gap: 10px;
+  }
+  .export-buttons button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .export-buttons button:hover {
+    background-color: #0056b3;
+  }

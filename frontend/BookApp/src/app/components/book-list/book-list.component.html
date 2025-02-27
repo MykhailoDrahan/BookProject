@@ -1,5 +1,9 @@
 <div class="container">
   <div class="book-list">
+    <div class="export-buttons">
+      <button (click)="exportToCSV()">Експорт у CSV</button>
+      <button (click)="exportToPDF()">Друк / PDF</button>
+    </div>
     <div>
       <input type="text" placeholder="Пошук за назвою" [(ngModel)]="searchTerm" (input)="onSearchChange()">
     </div>

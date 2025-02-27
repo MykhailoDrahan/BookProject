@@ -125,4 +125,34 @@ export class BookListComponent implements OnInit {
     this.showModal = false;
     this.loadBooks();
   }
+
+  exportToCSV(): void {
+    const csvRows = [];
+    const headers = ['Назва', 'Дата публікації', 'Опис', 'Кількість сторінок'];
+    csvRows.push(headers.join(','));
+
+    this.filteredBooks.forEach(book => {
+      const row = [
+        `"${book.title}"`,
+        `"${book.publicationDate}"`,
+        `"${book.description}"`,
+        `"${book.pageCount}"`
+      ];
+      csvRows.push(row.join(','));
+    });
+
+    const csvContent = csvRows.join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Books.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  exportToPDF(): void {
+    window.print();
+  }
 }
