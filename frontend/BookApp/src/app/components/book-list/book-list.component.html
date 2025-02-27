@@ -23,7 +23,9 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let book of filteredBooks">
+    <tr *ngFor="let book of filteredBooks" 
+        [class.active]="book.id === selectedBookId"
+        (click)="setActiveBook(book.id!)">
       <td>{{ book.title }}</td>
       <td>{{ book.publicationDate | date:'yyyy-MM-dd' }}</td>
       <td>{{ book.pageCount }}</td>
@@ -32,6 +34,7 @@
       </td>
     </tr>
   </tbody>
+  
 </table>
 
 <app-book-form [showModal]="showModal" [book]="selectedBook" (closeModal)="showModal = false" (bookSaved)="onBookSaved()"></app-book-form>

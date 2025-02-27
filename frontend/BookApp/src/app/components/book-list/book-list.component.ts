@@ -20,6 +20,7 @@ export class BookListComponent implements OnInit {
   searchTerm: string = '';
   showModal: boolean = false;
   selectedBook: Book = { title: '', publicationDate: '', description: '', pageCount: 0 };
+  selectedBookId: number | null = null;  // 🔹 Змінна для підсвічування
   sortField: string = '';
   sortDirection: 'asc' | 'desc' = 'asc';
   startDate: string | null = null;
@@ -106,6 +107,12 @@ export class BookListComponent implements OnInit {
     this.startDate = null;
     this.endDate = null;
     this.applyFilters();
+  }
+
+  setActiveBook(bookId: number | undefined): void {
+    if (bookId !== undefined) {
+      this.selectedBookId = this.selectedBookId === bookId ? null : bookId;
+    }
   }
 
   openModal(book?: Book): void {
