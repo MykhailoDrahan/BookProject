@@ -4,15 +4,26 @@
   
   <button (click)="openModal()">Додати книгу</button>
   
-  <ul>
-    <li *ngFor="let book of filteredBooks">
-      <h3>{{ book.title }}</h3>
-      <p>{{ book.publicationDate | date:'yyyy-MM-dd' }}</p>
-      <p>{{ book.description }}</p>
-      <p>Сторінок: {{ book.pageCount }}</p>
-      <button (click)="openModal(book)">Редагувати</button>
-    </li>
-  </ul>
+  <table>
+    <thead>
+      <tr>
+        <th (click)="toggleSort('title')">Назва</th>
+        <th (click)="toggleSort('publicationDate')">Дата публікації</th>
+        <th (click)="toggleSort('pageCount')">Кількість сторінок</th>
+        <th>Дії</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let book of filteredBooks">
+        <td>{{ book.title }}</td>
+        <td>{{ book.publicationDate | date:'yyyy-MM-dd' }}</td>
+        <td>{{ book.pageCount }}</td>
+        <td>
+          <button (click)="openModal(book)">Редагувати</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
   
   <app-book-form [showModal]="showModal" [book]="selectedBook" (closeModal)="showModal = false" (bookSaved)="onBookSaved()"></app-book-form>
   

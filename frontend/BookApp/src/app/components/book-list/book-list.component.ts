@@ -18,6 +18,8 @@ export class BookListComponent implements OnInit {
   searchTerm: string = '';
   showModal: boolean = false;
   selectedBook: Book = { title: '', publicationDate: '', description: '', pageCount: 0 };
+  sortField: string = '';
+  sortDirection: 'asc' | 'desc' = 'asc';
 
   private bookService = inject(BookService);
 
@@ -28,7 +30,7 @@ export class BookListComponent implements OnInit {
   loadBooks(): void {
     this.bookService.getBooks().subscribe(data => {
       this.books = data;
-      this.filteredBooks = data;
+      this.filteredBooks = [...this.books];
     });
   }
 
@@ -38,6 +40,30 @@ export class BookListComponent implements OnInit {
     );
   }
 
+  toggleSort(field: string): void {
+    if (this.sortField === field) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortField = field;
+      this.sortDirection = 'asc';
+    }
+    this.sortBooks();
+  }
+
+  sortBooks(): void {
+    this.filteredBooks.sort((a, b) => {
+      let valueA = (a as any)[this.sortField];
+      let valueB = (b as any)[this.sortField];
+
+      if (typeof valueA === 'string') valueA = valueA.toLowerCase();
+      if (typeof valueB === 'string') valueB = valueB.toLowerCase();
+
+      if (valueA < valueB) return this.sortDirection === 'asc' ? -1 : 1;
+      if (valueA > valueB) return this.sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }
+
   openModal(book?: Book): void {
     this.selectedBook = book ? { ...book } : { title: '', publicationDate: '', description: '', pageCount: 0 };
     this.showModal = true;
@@ -45,6 +71,6 @@ export class BookListComponent implements OnInit {
 
   onBookSaved(): void {
     this.showModal = false;
-    this.loadBooks(); // 🔹 Оновлюємо список після збереження книги
+    this.loadBooks();
   }
 }
