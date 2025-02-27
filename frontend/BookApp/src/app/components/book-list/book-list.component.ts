@@ -6,13 +6,14 @@ import { DatePipe } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { BookFormComponent } from '../book-form/book-form.component';
+import { BookChartComponent } from '../book-chart/book-chart.component';
 
 @Component({
   selector: 'app-book-list',
   standalone: true,
   templateUrl: './book-list.component.html',
   styleUrls: ['./book-list.component.css'],
-  imports: [NgForOf, FormsModule, DatePipe, BookFormComponent, MatDatepickerModule, MatNativeDateModule]
+  imports: [NgForOf, FormsModule, DatePipe, BookFormComponent, MatDatepickerModule, MatNativeDateModule, BookChartComponent ]
 })
 export class BookListComponent implements OnInit {
   books: Book[] = [];
@@ -20,7 +21,7 @@ export class BookListComponent implements OnInit {
   searchTerm: string = '';
   showModal: boolean = false;
   selectedBook: Book = { title: '', publicationDate: '', description: '', pageCount: 0 };
-  selectedBookId: number | null = null;  // 🔹 Змінна для підсвічування
+  selectedBookId: number | null = null;
   sortField: string = '';
   sortDirection: 'asc' | 'desc' = 'asc';
   startDate: string | null = null;
